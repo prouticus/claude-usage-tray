@@ -15,7 +15,8 @@
     "package:mac": "bun run build && electron-builder --mac"
   },
   "dependencies": {
-    "electron-store": "^11.0.2"
+    "electron-store": "^11.0.2",
+    "electron-updater": "^6.8.3"
   },
   "devDependencies": {
     "@types/react": "^19.0.0",

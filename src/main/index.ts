@@ -1,6 +1,7 @@
 import { app, BrowserWindow, Tray, Menu, ipcMain, nativeImage, screen } from 'electron';
 import path from 'path';
 import Store from 'electron-store';
+import { autoUpdater } from 'electron-updater';
 import { isAuthenticated } from './auth';
 import { fetchUsageData } from './apiClient';
 import type { UsageData } from '../shared/types';
@@ -28,6 +29,7 @@ let tray: Tray | null = null;
 let popupWindow: BrowserWindow | null = null;
 let miniWindow: BrowserWindow | null = null;
 let cachedUsageData: UsageData | null = null;
+let updateReady = false;
 
 const POPUP_WIDTH = 300;
 const POPUP_HEIGHT = 440;
@@ -164,7 +166,7 @@ function togglePopup(): void {
 }
 
 function buildTrayMenu(): Menu {
-  return Menu.buildFromTemplate([
+  const template: Electron.MenuItemConstructorOptions[] = [
     {
       label: 'Open',
       click: () => togglePopup(),
@@ -193,11 +195,41 @@ function buildTrayMenu(): Menu {
       },
     },
     { type: 'separator' },
-    {
-      label: 'Quit',
-      click: () => app.quit(),
-    },
-  ]);
+  ];
+
+  if (updateReady) {
+    template.push({
+      label: 'Restart to update',
+      click: () => autoUpdater.quitAndInstall(),
+    });
+    template.push({ type: 'separator' });
+  }
+
+  template.push({
+    label: 'Quit',
+    click: () => app.quit(),
+  });
+
+  return Menu.buildFromTemplate(template);
+}
+
+function refreshTrayMenu(): void {
+  tray?.setContextMenu(buildTrayMenu());
+}
+
+function setupAutoUpdater(): void {
+  autoUpdater.autoDownload = true;
+  autoUpdater.autoInstallOnAppQuit = true;
+
+  autoUpdater.on('update-downloaded', () => {
+    updateReady = true;
+    refreshTrayMenu();
+    tray?.setToolTip('Claude Usage — update ready, right-click to install');
+  });
+
+  // Check on startup after a short delay, then every 4 hours
+  setTimeout(() => autoUpdater.checkForUpdates(), 10_000);
+  setInterval(() => autoUpdater.checkForUpdates(), 4 * 60 * 60 * 1000);
 }
 
 function createTray(): void {
@@ -208,6 +240,11 @@ function createTray(): void {
   tray.setToolTip('Claude Usage');
   tray.setContextMenu(buildTrayMenu());
   tray.on('click', () => togglePopup());
+
+  // Auto-updater is only active in packaged builds
+  if (app.isPackaged) {
+    setupAutoUpdater();
+  }
 }
 
 // ---------------------------------------------------------------------------
