@@ -2,7 +2,7 @@
 
 A lightweight Windows/macOS system tray app that shows your [Claude.ai](https://claude.ai) usage stats at a glance — no browser tab required.
 
-![Mini widget showing Session, Weekly, and Extra usage bars](.github/screenshot-mini.png)
+![Mini widget showing Session, Weekly, and Extra usage bars](https://github.com/prouticus/claude-usage-tray/blob/master/public/claude_usage_overlay.jpg)
 
 ## Features
 
