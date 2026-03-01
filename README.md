@@ -4,6 +4,8 @@ A lightweight Windows/macOS system tray app that shows your [Claude.ai](https://
 
 ![Mini widget showing Session, Weekly, and Extra usage bars](https://github.com/prouticus/claude-usage-tray/blob/master/public/claude_usage_overlay.jpg)
 
+![Expanded widget](https://github.com/prouticus/claude-usage-tray/blob/master/public/claude_usage_UI_expanded.jpg)
+
 ## Features
 
 - **Always-on-top mini widget** — draggable progress bars in the corner of your screen showing session, weekly, and extra usage
