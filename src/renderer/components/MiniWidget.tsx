@@ -28,6 +28,7 @@ function MiniBar({ label, percent, color }: { label: string; percent: number; co
 
 export default function MiniWidget() {
   const [usage, setUsage] = useState<UsageInfo | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     window.electronAPI.usage.getData().then(result => {
@@ -36,6 +37,13 @@ export default function MiniWidget() {
     const unsub = window.electronAPI.usage.onUpdate(data => setUsage(data.usage));
     return unsub;
   }, []);
+
+  async function handleRefresh() {
+    if (refreshing) return;
+    setRefreshing(true);
+    await window.electronAPI.usage.refresh();
+    setRefreshing(false);
+  }
 
   // Resize window to fit the number of bars being shown
   const hasExtra = usage?.extraPercent !== undefined;
@@ -60,13 +68,36 @@ export default function MiniWidget() {
 
       {/* Header — acts as the drag handle */}
       <div style={{
-        fontSize: 9,
-        fontWeight: 700,
-        letterSpacing: '0.1em',
-        color: '#444',
-        textTransform: 'uppercase',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
       }}>
-        Claude usage
+        <span style={{
+          fontSize: 9,
+          fontWeight: 700,
+          letterSpacing: '0.1em',
+          color: '#444',
+          textTransform: 'uppercase',
+        }}>
+          Claude usage
+        </span>
+        <button
+          onClick={handleRefresh}
+          title="Refresh"
+          style={{
+            background: 'none',
+            border: 'none',
+            padding: 0,
+            cursor: refreshing ? 'default' : 'pointer',
+            color: refreshing ? '#333' : '#555',
+            fontSize: 10,
+            lineHeight: 1,
+            // @ts-expect-error WebkitAppRegion not in CSSProperties
+            WebkitAppRegion: 'no-drag',
+          }}
+        >
+          ↻
+        </button>
       </div>
 
       {/* Bars — no-drag so clicks register; opens the full popup */}
