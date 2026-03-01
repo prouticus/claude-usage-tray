@@ -1,0 +1,32 @@
+{
+  "appId": "com.mantisarts.claude-usage-tray",
+  "productName": "Claude Usage",
+  "directories": {
+    "output": "release"
+  },
+  "files": [
+    "dist/**/*",
+    "public/**/*",
+    "package.json"
+  ],
+  "asar": true,
+  "win": {
+    "target": [{ "target": "nsis", "arch": ["x64"] }],
+    "icon": "public/icon.ico",
+    "artifactName": "${productName}-${version}-win-setup.${ext}"
+  },
+  "mac": {
+    "target": [{ "target": "dmg", "arch": ["x64", "arm64"] }],
+    "icon": "public/icon.icns",
+    "category": "public.app-category.productivity",
+    "extendInfo": {
+      "LSUIElement": true
+    }
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true,
+    "createDesktopShortcut": false,
+    "createStartMenuShortcut": true
+  }
+}

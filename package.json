@@ -1,0 +1,37 @@
+{
+  "name": "claude-usage-tray",
+  "version": "1.0.0",
+  "description": "System tray app showing Claude.ai usage stats",
+  "main": "dist/main/main.js",
+  "scripts": {
+    "start": "concurrently \"bun run build:main:watch\" \"bun run build:renderer:watch\" \"wait-on dist/main/main.js dist/main/preload.js dist/renderer/renderer.js && bunx electron .\"",
+    "build": "bun run build:main && bun run build:renderer",
+    "build:main": "webpack --config webpack.main.config.js --mode production",
+    "build:main:watch": "webpack --config webpack.main.config.js --mode development --watch",
+    "build:renderer": "webpack --config webpack.renderer.config.js --mode production",
+    "build:renderer:watch": "webpack --config webpack.renderer.config.js --mode development --watch",
+    "package": "bun run build && electron-builder",
+    "package:win": "bun run build && electron-builder --win",
+    "package:mac": "bun run build && electron-builder --mac"
+  },
+  "dependencies": {
+    "electron-store": "^11.0.2"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "concurrently": "^9.0.0",
+    "css-loader": "^7.0.0",
+    "electron": "^35.0.0",
+    "electron-builder": "^25.0.0",
+    "html-webpack-plugin": "^5.6.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "style-loader": "^4.0.0",
+    "ts-loader": "^9.5.0",
+    "typescript": "^5.7.0",
+    "wait-on": "^8.0.0",
+    "webpack": "^5.97.0",
+    "webpack-cli": "^6.0.0"
+  }
+}
