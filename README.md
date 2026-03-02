@@ -14,6 +14,25 @@ A lightweight Windows/macOS system tray app that shows your [Claude.ai](https://
 - **Extra usage billing** — shows spend vs. limit when you have Claude's extra usage feature enabled
 - **Launch at startup** — optional, toggled from the tray menu
 
+## Installation
+
+Download the latest installer for your OS from the [Releases](https://github.com/prouticus/claude-usage-tray/releases/latest) page:
+
+| OS | File to download |
+|----|-----------------|
+| Windows | `Claude Usage-x.x.x-win-setup.exe` |
+| macOS | `Claude Usage-x.x.x-mac.dmg` |
+
+**Windows:** Run the `.exe` installer. It adds a Start Menu shortcut and an entry in *Programs & Features* for uninstalling.
+
+**macOS:** Open the `.dmg` and drag *Claude Usage* to your Applications folder. On first launch, right-click the app → **Open** to bypass the Gatekeeper warning (the app is not yet notarized).
+
+Once installed, the app starts from the system tray. No terminal required.
+
+> **Auto-updates:** the app checks for new releases every 4 hours and downloads them in the background. When an update is ready, *Restart to update* will appear in the tray menu.
+
+---
+
 ## Prerequisite: Claude Code CLI
 
 This app reads the OAuth credentials that [Claude Code](https://docs.anthropic.com/en/docs/claude-code) stores locally at `~/.claude/.credentials.json`. You must have Claude Code installed and be signed in for the app to work.
